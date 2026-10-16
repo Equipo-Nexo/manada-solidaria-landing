@@ -276,6 +276,9 @@ h1 em {
 }
 
 .primary-cta {
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   display: inline-flex;
   align-items: center;
   gap: 15px;
@@ -290,6 +293,28 @@ h1 em {
 
 .primary-cta svg {
   width: 20px;
+  transition: transform 180ms ease;
+}
+
+@media (hover: hover) {
+  .primary-cta:hover {
+    background: var(--orange-dark);
+    box-shadow: 0 16px 30px rgba(234, 95, 9, 0.32);
+    transform: translateY(-3px);
+  }
+
+  .primary-cta:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+.primary-cta:active {
+  transform: translateY(0);
+}
+
+.primary-cta:focus-visible {
+  outline: 3px solid var(--brown);
+  outline-offset: 4px;
 }
 
 .hero__note {
@@ -1312,6 +1337,17 @@ footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .primary-cta,
+  .primary-cta svg {
+    transition: none;
+    transform: none;
+  }
+
+  .primary-cta:hover,
+  .primary-cta:hover svg {
+    transform: none;
+  }
+
   html {
     scroll-behavior: auto;
   }

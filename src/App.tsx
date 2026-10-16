@@ -138,6 +138,10 @@ const featureGroups: { title: string; description: string; items: Feature[] }[] 
 const sectionNavigation = [
   { id: "punto-de-partida", label: "El punto de partida" },
   { id: "funcionalidades", label: "Funcionalidades" },
+  ...featureGroups.map((group, index) => ({
+    id: `funcionalidades-${index}`,
+    label: group.title,
+  })),
   { id: "equipo", label: "Equipo Nexo" },
   { id: "aplicacion", label: "Conocé la aplicación" },
 ]
@@ -307,7 +311,7 @@ export default function App() {
 
           <div className="feature-groups">
             {featureGroups.map((group, groupIndex) => (
-              <section className="feature-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
+              <section id={`funcionalidades-${groupIndex}`} className="feature-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
                 <div className="feature-group__heading">
                   <span className="feature-group__number">0{groupIndex + 1}</span>
                   <div>
@@ -416,7 +420,7 @@ export default function App() {
       <footer>
         <div className="shell footer__inner">
           <span>Manada Solidaria</span>
-          <span>Proyecto académico · Equipo Nexo · 2025</span>
+          <span>Proyecto académico · Equipo Nexo · 2026</span>
         </div>
       </footer>
       {activeSection >= 0 && (
