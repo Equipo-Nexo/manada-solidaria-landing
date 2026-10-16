@@ -6,7 +6,69 @@ import Users from "./icons/Users"
 import User from "./icons/User"
 import BriefcaseMedical from "./icons/BriefcaseMedical"
 import Stethoscope from "./icons/Stethoscope"
-import { useEffect, useState, type ComponentType, type ReactNode, type SVGProps } from "react"
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
+
+function WalkingPaws() {
+  const container = useRef<HTMLDivElement>(null)
+  const [trail, setTrail] = useState<{ x: number; y: number; angle: number; length: number; cycle: number } | null>(null)
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
+    let timer: ReturnType<typeof setTimeout> | undefined
+    let cycle = 0
+
+    const step = () => {
+      if (preference.matches) return
+      const bounds = container.current?.getBoundingClientRect()
+      if (bounds && bounds.bottom > 0 && bounds.top < window.innerHeight && !document.hidden) {
+        const visibleTop = Math.max(0, -bounds.top)
+        const visibleHeight = Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0)
+        const length = Math.min(360, bounds.width - 40, visibleHeight - 32)
+        const angle = Math.random() * 360
+        const radians = angle * Math.PI / 180
+        const halfWidth = (Math.abs(Math.cos(radians)) * 54 + Math.abs(Math.sin(radians)) * length) / 2
+        const halfHeight = (Math.abs(Math.sin(radians)) * 54 + Math.abs(Math.cos(radians)) * length) / 2
+        if (length >= 120) {
+        setTrail({
+          x: halfWidth + Math.random() * Math.max(0, bounds.width - 2 * halfWidth),
+          y: visibleTop + halfHeight + Math.random() * Math.max(0, visibleHeight - 2 * halfHeight),
+          angle,
+          length,
+          cycle: cycle++,
+        })
+        }
+      }
+      timer = setTimeout(step, 4500 + Math.random() * 2500)
+    }
+
+    const restart = () => {
+      clearTimeout(timer)
+      setTrail(null)
+      if (!preference.matches) timer = setTimeout(step, 500 + Math.random() * 2500)
+    }
+
+    restart()
+    preference.addEventListener("change", restart)
+    return () => {
+      clearTimeout(timer)
+      preference.removeEventListener("change", restart)
+    }
+  }, [])
+
+  return (
+    <div className="walking-paws" ref={container} aria-hidden="true">
+      {trail && (
+        <div key={trail.cycle} className="walking-paws__trail" style={{ left: trail.x, top: trail.y, height: trail.length, transform: `translate(-50%, -50%) rotate(${trail.angle}deg)`, "--step-gap": `${(trail.length - 22) / 9}px` } as CSSProperties}>
+          {Array.from({ length: 10 }, (_, index) => (
+            <span className="walking-paws__step" key={index} style={{ "--step": index } as CSSProperties}>
+              <PawPrint />
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 type IconName = "arrow" | "bell" | "campaign" | "cases" | "check" | "cruz" | "heart" | "location" | "network" | "search" | "vet"
 
@@ -221,6 +283,7 @@ export default function App() {
       </header>
 
       <section className="hero">
+        <WalkingPaws />
         <div className="shell hero__grid">
           <div className="hero__copy">
             <div className="eyebrow">
@@ -269,6 +332,7 @@ export default function App() {
       </section>
 
       <section id="punto-de-partida" className="challenge section">
+        <WalkingPaws />
         <div className="shell">
           <div className="section-heading">
             <span className="section-number">01</span>
@@ -391,6 +455,7 @@ export default function App() {
       </section>
 
       <section id="equipo" className="team section">
+        <WalkingPaws />
         <div className="shell team__grid">
           <div className="team__intro">
             <span className="section-kicker">Las personas detrás</span>

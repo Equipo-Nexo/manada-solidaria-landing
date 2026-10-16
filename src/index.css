@@ -1430,3 +1430,59 @@ footer {
     transition: none;
   }
 }
+.challenge,
+.team {
+  position: relative;
+}
+
+.walking-paws {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+}
+
+.walking-paws__trail {
+  position: absolute;
+  width: 54px;
+  height: 360px;
+}
+
+.walking-paws__step {
+  position: absolute;
+  top: calc(var(--step) * var(--step-gap));
+  left: 0;
+  opacity: 0;
+  color: var(--brown-secondary);
+  rotate: 170deg;
+  animation: paw-footstep 3500ms ease both;
+  animation-delay: calc(var(--step) * 320ms);
+}
+
+.walking-paws__step:nth-child(even) {
+  left: 28px;
+  rotate: 190deg;
+}
+
+.walking-paws__step svg {
+  width: 22px;
+  height: 22px;
+}
+
+@keyframes paw-footstep {
+  0% { opacity: 0; scale: 0.85; }
+  12%, 45% { opacity: 0.32; scale: 1; }
+  100% { opacity: 0; scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walking-paws {
+    display: none;
+  }
+
+  .walking-paws__step {
+    animation: none;
+  }
+}
