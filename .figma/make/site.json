@@ -1,0 +1,12 @@
+{
+  "title": "Manada Solidaria",
+  "description": "Una propuesta para reunir casos de animales y conectar a la comunidad de Villa María en un mismo lugar.",
+  "language": "es",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
