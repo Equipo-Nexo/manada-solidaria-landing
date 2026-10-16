@@ -1,4 +1,4 @@
-import type { ReactNode, SVGProps } from "react"
+import { useEffect, useState, type ReactNode, type SVGProps } from "react"
 
 type IconName = "arrow" | "bell" | "campaign" | "cases" | "check" | "cruz" | "heart" | "location" | "network" | "search" | "vet"
 
@@ -145,9 +145,42 @@ const features = [
   },
 ]
 
+const sectionNavigation = [
+  { id: "punto-de-partida", label: "El punto de partida" },
+  { id: "funcionalidades", label: "Funcionalidades" },
+  { id: "equipo", label: "Equipo Nexo" },
+  { id: "aplicacion", label: "Conocé la aplicación" },
+]
+
 export default function App() {
+  const [activeSection, setActiveSection] = useState(-1)
+
+  useEffect(() => {
+    const updateSection = () => {
+      const threshold = window.innerHeight * 0.35
+      let current = -1
+      sectionNavigation.forEach(({ id }, index) => {
+        const section = document.getElementById(id)
+        if (section && section.getBoundingClientRect().top <= threshold) {
+          current = index
+        }
+      })
+      setActiveSection(current)
+    }
+
+    updateSection()
+    window.addEventListener("scroll", updateSection, { passive: true })
+    window.addEventListener("resize", updateSection)
+    return () => {
+      window.removeEventListener("scroll", updateSection)
+      window.removeEventListener("resize", updateSection)
+    }
+  }, [])
+
+  const nextSection = sectionNavigation[activeSection + 1]
+
   return (
-    <main>
+    <main id="inicio">
       <header className="site-header">
         <div className="shell site-header__inner">
           <LogoPlaceholder />
@@ -266,7 +299,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="features section">
+      <section id="funcionalidades" className="features section">
         <div className="shell">
           <div className="features__intro">
             <div className="section-heading section-heading--light">
@@ -305,7 +338,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="team section">
+      <section id="equipo" className="team section">
         <div className="shell team__grid">
           <div className="team__intro">
             <span className="section-kicker">Las personas detrás</span>
@@ -344,7 +377,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="closing section">
+      <section id="aplicacion" className="closing section">
         <div className="shell closing__card">
           <div className="closing__copy">
             <LogoPlaceholder light />
@@ -374,6 +407,15 @@ export default function App() {
           <span>Proyecto académico · Equipo Nexo · 2025</span>
         </div>
       </footer>
+      {activeSection >= 0 && (
+        <a
+          className={`section-navigation ${nextSection ? "" : "section-navigation--top"}`}
+          href={nextSection ? `#${nextSection.id}` : "#inicio"}
+          aria-label={nextSection ? `Ir a ${nextSection.label}` : "Volver al inicio"}
+        >
+          <Icon name="arrow" />
+        </a>
+      )}
     </main>
   )
 }
