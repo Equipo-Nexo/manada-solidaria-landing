@@ -1,4 +1,12 @@
-import { useEffect, useState, type ReactNode, type SVGProps } from "react"
+import PawPrint from "./icons/PawPrint"
+import HandHeart from "./icons/HandHeart"
+import DollarSign from "./icons/DollarSign"
+import Map from "./icons/Map"
+import Users from "./icons/Users"
+import User from "./icons/User"
+import BriefcaseMedical from "./icons/BriefcaseMedical"
+import Stethoscope from "./icons/Stethoscope"
+import { useEffect, useState, type ComponentType, type ReactNode, type SVGProps } from "react"
 
 type IconName = "arrow" | "bell" | "campaign" | "cases" | "check" | "cruz" | "heart" | "location" | "network" | "search" | "vet"
 
@@ -101,7 +109,7 @@ function LogoPlaceholder({ light = false }: { light?: boolean }) {
 }
 
 type Feature = {
-  icon: IconName
+  icon: ComponentType<SVGProps<SVGSVGElement>>
   title: string
   text: string
   screenshot?: string
@@ -112,26 +120,26 @@ const featureGroups: { title: string; description: string; items: Feature[] }[] 
     title: "Ayudar a los animales",
     description: "Encontrá casos y distintas formas de dar una mano.",
     items: [
-      { icon: "heart", title: "Publicaciones de animales", text: "Conocé animales perdidos, encontrados y en adopción.", screenshot: "/screen_animal_perdido.jpeg" },
-      { icon: "campaign", title: "Campañas", text: "Descubrí iniciativas solidarias y cómo participar.", screenshot: "/screen_campaña.png" },
-      { icon: "cases", title: "Colectas", text: "Colaborá con los recursos que necesita cada caso.", screenshot: "/screen_colecta.png" },
-      { icon: "location", title: "Mapa de publicaciones", text: "Ubicá todas las publicaciones y encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
+      { icon: PawPrint, title: "Publicaciones de animales", text: "Conocé animales perdidos, encontrados y en adopción.", screenshot: "/screen_animal_perdido.jpeg" },
+      { icon: HandHeart, title: "Campañas", text: "Descubrí iniciativas solidarias y cómo participar.", screenshot: "/screen_campaña.png" },
+      { icon: DollarSign, title: "Colectas", text: "Colaborá con los recursos que necesita cada caso.", screenshot: "/screen_colecta.png" },
+      { icon: Map, title: "Mapa de publicaciones", text: "Ubicá todas las publicaciones y encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
     ],
   },
   {
     title: "Comunidad",
     description: "Conectá con las personas que forman parte de la red.",
     items: [
-      { icon: "network", title: "Comunidad", text: "Encontrá personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
-      { icon: "heart", title: "Perfil", text: "Mostrá quién sos y cómo participás en Manada Solidaria.", screenshot: "/screen_perfil.png" },
+      { icon: Users, title: "Comunidad", text: "Encontrá personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
+      { icon: User, title: "Perfil", text: "Mostrá quién sos y cómo participás en Manada Solidaria.", screenshot: "/screen_perfil.png" },
     ],
   },
   {
     title: "Emergencias",
     description: "Accedé rápido a la información cuando más importa.",
     items: [
-      { icon: "vet", title: "Veterinarias", text: "Consultá veterinarias y sus datos de contacto." },
-      { icon: "bell", title: "Botón de emergencia", text: "Accedé rápidamente a las opciones de ayuda ante una urgencia.", screenshot: "/screen_boton_guardia.png" },
+      { icon: BriefcaseMedical, title: "Veterinarias", text: "Consultá veterinarias y sus datos de contacto." },
+      { icon: Stethoscope, title: "Botón de emergencia", text: "Accedé rápidamente a las opciones de ayuda ante una urgencia.", screenshot: "/screen_boton_guardia.png" },
     ],
   },
 ]
@@ -148,6 +156,32 @@ const sectionNavigation = [
 
 export default function App() {
   const [activeSection, setActiveSection] = useState(-1)
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return
+
+    const targets = document.querySelectorAll<HTMLElement>(
+      ".hero__copy > *, .hero__visual, .section-heading, .problem-card, .challenge__connector, .solution-card, .feature-group__heading, .feature-card, .team__intro, .member, .closing__copy, .qr-area",
+    )
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed")
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08 })
+
+    targets.forEach((target) => {
+      target.classList.add("reveal")
+      observer.observe(target)
+    })
+
+    return () => {
+      observer.disconnect()
+      targets.forEach((target) => target.classList.remove("reveal", "is-revealed"))
+    }
+  }, [])
 
   useEffect(() => {
     const updateSection = () => {
@@ -323,7 +357,7 @@ export default function App() {
                   {group.items.map((feature) => (
                     <article className="feature-card" key={feature.title}>
                       <div className="feature-card__copy">
-                        <span className="feature-card__icon"><Icon name={feature.icon} /></span>
+                        <span className="feature-card__icon"><feature.icon aria-hidden="true" /></span>
                         <h4>{feature.title}</h4>
                         <p>{feature.text}</p>
                       </div>
