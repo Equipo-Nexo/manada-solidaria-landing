@@ -168,6 +168,12 @@ img {
   color: var(--white);
 }
 
+.logo--light .logo__mark {
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--cream);
+}
+
 .site-header__meta {
   gap: 12px;
   color: var(--brown-soft);
@@ -976,18 +982,15 @@ h1 em {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 40px;
+  margin: 50px;
   border-radius: 32px;
   background: var(--cream);
 }
 
 .qr-placeholder {
   display: grid;
-  width: min(280px, 70%);
   aspect-ratio: 1;
   place-items: center;
-  border: 2px dashed rgba(89, 65, 55, 0.28);
-  border-radius: 20px;
   background: var(--white);
 }
 

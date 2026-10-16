@@ -395,7 +395,6 @@ export default function App() {
       <section id="aplicacion" className="closing section">
         <div className="shell closing__card">
           <div className="closing__copy">
-            <LogoPlaceholder light />
             <span className="closing__eyebrow">Conocé la aplicación</span>
             <h2>Sumate a una comunidad que transforma intención en ayuda.</h2>
             <p>
@@ -408,9 +407,7 @@ export default function App() {
             </div>
           </div>
           <div className="qr-area">
-            <div className="qr-placeholder">
-              <span>[QR DE LA APLICACIÓN]</span>
-            </div>
+            <img src='qr-manada.png' />
             <p>Escaneá para conocer la propuesta</p>
           </div>
         </div>
