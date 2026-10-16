@@ -631,97 +631,125 @@ h1 em {
   line-height: 1.7;
 }
 
-.feature-grid {
+.feature-groups {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  margin-top: 72px;
+}
+
+.feature-group + .feature-group {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.feature-group__heading {
+  display: flex;
+  align-items: flex-start;
   gap: 18px;
-  margin-top: 70px;
+  margin-bottom: 28px;
 }
 
-.feature-card {
-  min-height: 332px;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.055);
-  transition: transform 180ms ease, background 180ms ease;
-}
-
-.feature-card:nth-child(2),
-.feature-card:nth-child(5) {
-  background: var(--white);
-}
-
-.feature-card:nth-child(2) h3,
-.feature-card:nth-child(5) h3 {
-  color: var(--brown);
-}
-
-.feature-card:nth-child(2) p,
-.feature-card:nth-child(5) p {
-  color: var(--brown-soft);
-}
-
-.feature-card:nth-child(2) .feature-card__detail,
-.feature-card:nth-child(5) .feature-card__detail {
-  color: var(--brown-secondary);
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-}
-
-.feature-card__head {
-  justify-content: space-between;
-}
-
-.feature-card__icon {
-  display: grid;
-  width: 52px;
-  height: 52px;
-  place-items: center;
-  border-radius: 17px;
-  background: var(--orange);
-  color: var(--white);
-}
-
-.feature-card__icon svg {
-  width: 25px;
-}
-
-.feature-card__number {
+.feature-group__number {
+  padding-top: 6px;
   color: var(--lilac);
   font-size: 12px;
   font-weight: 800;
 }
 
-.feature-card h3 {
-  margin-top: 32px;
+.feature-group__heading h3 {
   color: var(--white);
-  font-size: 20px;
-  font-weight: 700;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.feature-group__heading p {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.feature-card__copy {
+  padding: 28px;
+}
+
+.feature-card__icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--orange);
+  color: var(--white);
+}
+
+.feature-card__icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.feature-card h4 {
+  margin: 20px 0 0;
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 800;
   letter-spacing: -0.025em;
 }
 
 .feature-card p {
-  margin-top: 14px;
-  color: rgba(255, 255, 255, 0.67);
-  font-size: 13px;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
   line-height: 1.65;
 }
 
-.feature-card__detail {
-  display: block;
-  margin-top: 24px;
-  color: var(--lilac);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.feature-card__screenshot {
+  margin: 0 20px 20px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--cream);
 }
 
+.feature-card__screenshot img {
+  width: 100%;
+  height: auto;
+}
+
+.feature-card__placeholder {
+  display: flex;
+  min-height: 240px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--brown-soft);
+  text-align: center;
+}
+
+.feature-card__placeholder span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.feature-card__placeholder small {
+  font-size: 11px;
+}
 .scope-note {
   position: relative;
   z-index: 2;
@@ -1131,13 +1159,17 @@ footer {
     padding-left: 52px;
   }
 
-  .feature-grid {
-    grid-template-columns: 1fr;
+  .feature-groups {
     margin-top: 45px;
   }
 
-  .feature-card {
-    min-height: auto;
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-group + .feature-group {
+    margin-top: 44px;
+    padding-top: 36px;
   }
 
   .scope-note {

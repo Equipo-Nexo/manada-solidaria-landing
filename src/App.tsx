@@ -90,7 +90,7 @@ function LogoPlaceholder({ light = false }: { light?: boolean }) {
       aria-label="Espacio reservado para el logo de Manada Solidaria"
     >
       <div className="logo__mark">
-        <img src="logo.png" />
+        <img src="logo_manada.png" />
       </div>
       <div className="logo__type">
         <strong>Manada</strong>
@@ -100,51 +100,41 @@ function LogoPlaceholder({ light = false }: { light?: boolean }) {
   )
 }
 
-const features = [
+type Feature = {
+  icon: IconName
+  title: string
+  text: string
+  screenshot?: string
+}
+
+const featureGroups: { title: string; description: string; items: Feature[] }[] = [
   {
-    icon: "cases" as const,
-    number: "01",
-    title: "Casos que siguen su curso",
-    text: "Publicar animales perdidos, encontrados o en adopción, seguir novedades y contactar a quienes participan.",
-    detail: "Publicación · seguimiento · contacto",
+    title: "Ayudar a los animales",
+    description: "Encontrá casos y distintas formas de dar una mano.",
+    items: [
+      { icon: "heart", title: "Publicaciones de animales", text: "Conocé animales perdidos, encontrados y en adopción.", screenshot: "/screen_animal_perdido.jpeg" },
+      { icon: "campaign", title: "Campañas", text: "Descubrí iniciativas solidarias y cómo participar.", screenshot: "/screen_campaña.png" },
+      { icon: "cases", title: "Colectas", text: "Colaborá con los recursos que necesita cada caso.", screenshot: "/screen_colecta.png" },
+      { icon: "location", title: "Mapa de publicaciones", text: "Ubicá todas las publicaciones y encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
+    ],
   },
   {
-    icon: "search" as const,
-    number: "02",
-    title: "Búsqueda más precisa",
-    text: "Encontrar casos mediante filtros y ubicación para acceder primero a la información más relevante.",
-    detail: "Filtros · categorías · ubicación",
+    title: "Comunidad",
+    description: "Conectá con las personas que forman parte de la red.",
+    items: [
+      { icon: "network", title: "Comunidad", text: "Encontrá personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
+      { icon: "heart", title: "Perfil", text: "Mostrá quién sos y cómo participás en Manada Solidaria.", screenshot: "/screen_perfil.png" },
+    ],
   },
   {
-    icon: "network" as const,
-    number: "03",
-    title: "Una red para colaborar",
-    text: "Conectar rescatistas, veterinarias, hogares de tránsito, transportistas y comunidad en un mismo entorno.",
-    detail: "Perfiles · roles · comunidad",
-  },
-  {
-    icon: "heart" as const,
-    number: "04",
-    title: "Adopciones acompañadas",
-    text: "Organizar las solicitudes de adopción y facilitar el seguimiento entre las personas involucradas.",
-    detail: "Solicitudes · estados · seguimiento",
-  },
-  {
-    icon: "campaign" as const,
-    number: "05",
-    title: "Campañas que llegan más lejos",
-    text: "Dar visibilidad a campañas solidarias y reunir la información necesaria para colaborar.",
-    detail: "Difusión · ayuda · participación",
-  },
-  {
-    icon: "vet" as const,
-    number: "06",
-    title: "Información cuando importa",
-    text: "Consultar guardias veterinarias y recibir notificaciones vinculadas con los casos de interés.",
-    detail: "Guardias · alertas · novedades",
+    title: "Emergencias",
+    description: "Accedé rápido a la información cuando más importa.",
+    items: [
+      { icon: "vet", title: "Veterinarias", text: "Consultá veterinarias y sus datos de contacto." },
+      { icon: "bell", title: "Botón de emergencia", text: "Accedé rápidamente a las opciones de ayuda ante una urgencia.", screenshot: "/screen_boton_guardia.png" },
+    ],
   },
 ]
-
 const sectionNavigation = [
   { id: "punto-de-partida", label: "El punto de partida" },
   { id: "funcionalidades", label: "Funcionalidades" },
@@ -315,19 +305,43 @@ export default function App() {
             </p>
           </div>
 
-          <div className="feature-grid">
-            {features.map((feature) => (
-              <article className="feature-card" key={feature.number}>
-                <div className="feature-card__head">
-                  <span className="feature-card__icon">
-                    <Icon name={feature.icon} />
-                  </span>
-                  <span className="feature-card__number">{feature.number}</span>
+          <div className="feature-groups">
+            {featureGroups.map((group, groupIndex) => (
+              <section className="feature-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
+                <div className="feature-group__heading">
+                  <span className="feature-group__number">0{groupIndex + 1}</span>
+                  <div>
+                    <h3 id={`feature-group-${groupIndex}`}>{group.title}</h3>
+                    <p>{group.description}</p>
+                  </div>
                 </div>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
-                <span className="feature-card__detail">{feature.detail}</span>
-              </article>
+                <div className="feature-grid">
+                  {group.items.map((feature) => (
+                    <article className="feature-card" key={feature.title}>
+                      <div className="feature-card__copy">
+                        <span className="feature-card__icon"><Icon name={feature.icon} /></span>
+                        <h4>{feature.title}</h4>
+                        <p>{feature.text}</p>
+                      </div>
+                      <div className="feature-card__screenshot">
+                        {feature.screenshot ? (
+                          <img src={feature.screenshot} alt={`Captura de la aplicación: ${feature.title}`} loading="lazy" />
+                        ) : (
+                          <div className="feature-card__placeholder">
+                            <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="3" y="3" width="18" height="18" rx="3" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <path d="m3 17 5-5 4 4 4-6 5 7" />
+                            </svg>
+                            <span>Captura de {feature.title.toLocaleLowerCase("es")}</span>
+                            <small>Próximamente</small>
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
           <p className="scope-note">
