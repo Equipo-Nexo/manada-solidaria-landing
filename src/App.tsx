@@ -356,13 +356,16 @@ export default function App() {
         <div className="shell team__grid">
           <div className="team__intro">
             <span className="section-kicker">Las personas detrás</span>
-            <h2>Equipo Nexo</h2>
+            <div className="team__heading">
+              <img className="team__logo" src="/logo_nexo.png" alt="Logo de Nexo" loading="lazy" />
+              <h2>Equipo Nexo</h2>
+            </div>
             <p>
               Grupo 6 del Proyecto Final de Ingeniería en Sistemas de
               Información.
             </p>
             <div className="university">
-              <span className="university__monogram">UTN</span>
+              <img className="university__logo" src="/isologotipo-utn-negro.svg" alt="Logo de la UTN" loading="lazy" />
               <span>
                 Universidad Tecnológica Nacional
                 <strong>Facultad Regional Villa María</strong>
@@ -371,16 +374,14 @@ export default function App() {
           </div>
           <div className="team__members">
             {[
-              ["AC", "Abril", "Conrero"],
-              ["EE", "Elian", "Enria"],
-              ["RM", "Rocío", "Menardi"],
-              ["LR", "Lucía", "Rosales"],
-              ["FS", "Federico", "Sanchez"],
-            ].map(([initials, name, surname], index) => (
-              <article className="member" key={initials}>
-                <span className={`member__avatar member__avatar--${index + 1}`}>
-                  {initials}
-                </span>
+              ["abril", "Abril", "Conrero"],
+              ["elian", "Elian", "Enria"],
+              ["rocio", "Rocío", "Menardi"],
+              ["lucia", "Lucía", "Rosales"],
+              ["federico", "Federico", "Sanchez"],
+            ].map(([photo, name, surname]) => (
+              <article className="member" key={photo}>
+                <img className={`member__avatar${photo === "rocio" ? " member__avatar--rocio" : ""}`} src={`/foto_${photo}.png`} alt={`${name} ${surname}`} loading="lazy" />
                 <span className="member__name">
                   {name}
                   <strong>{surname}</strong>
