@@ -21,12 +21,11 @@ function PetsCarousel() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hovered, setHovered] = useState(false)
-  const [focused, setFocused] = useState(false)
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
     const respectPreference = () => {
-      if (preference.matches) setPaused(true)
+      setPaused(preference.matches)
     }
     respectPreference()
     preference.addEventListener("change", respectPreference)
@@ -34,15 +33,15 @@ function PetsCarousel() {
   }, [])
 
   useEffect(() => {
-    if (paused || hovered || focused || petPhotos.length < 2) return
+    if (paused || hovered || petPhotos.length < 2) return
     const timer = window.setInterval(() => {
       if (!document.hidden) {
         const element = track.current
         element?.scrollTo({ left: ((active + 1) % petPhotos.length) * element.clientWidth, behavior: "smooth" })
       }
-    }, 5000)
+    }, 3000)
     return () => window.clearInterval(timer)
-  }, [active, paused, hovered, focused])
+  }, [active, paused, hovered])
 
   const goTo = (index: number) => {
     const element = track.current
@@ -54,21 +53,14 @@ function PetsCarousel() {
   if (!petPhotos.length) return null
 
   return (
-    <section className="pets-carousel" aria-labelledby="pets-title" aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => {
-      if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false)
-    }} onTouchStart={() => setPaused(true)}>
+    <section className="pets-carousel" aria-labelledby="pets-title" aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="pets-carousel__intro">
         <span className="section-kicker"><PawPrint aria-hidden="true" /> También son parte del equipo</span>
         <h3 id="pets-title">Nuestras mascotas</h3>
         <p>Nos acompañan todos los días y nos recuerdan por qué vale la pena construir una red para ayudar.</p>
-        <div className="pets-carousel__controls">
-          <button type="button" aria-label="Ver foto anterior" aria-controls="pets-photos" disabled={active === 0} onClick={() => goTo(active - 1)}><Icon name="arrow" /></button>
-          <span aria-live={paused || hovered || focused ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
-          <button type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1)}><Icon name="arrow" /></button>
-          <button type="button" aria-label={paused ? "Reanudar carrusel automático" : "Pausar carrusel automático"} onClick={() => setPaused(!paused)}>{paused ? "▶" : "Ⅱ"}</button>
-        </div>
       </div>
       <div className="pets-carousel__gallery">
+        <div className="pets-carousel__frame">
         <div id="pets-photos" className="pets-carousel__track" ref={track} tabIndex={0} aria-label="Fotos de nuestras mascotas" onScroll={(event) => {
           const element = event.currentTarget
           setActive(Math.max(0, Math.min(petPhotos.length - 1, Math.round(element.scrollLeft / element.clientWidth))))
@@ -83,6 +75,12 @@ function PetsCarousel() {
               <img src={photo.src} alt={`Nuestras mascotas: foto ${index + 1}`} loading="lazy" />
             </div>
           ))}
+        </div>
+          <button className="pets-carousel__nav pets-carousel__nav--previous" type="button" aria-label="Ver foto anterior" aria-controls="pets-photos" disabled={active === 0} onClick={() => goTo(active - 1)}><Icon name="arrow" /></button>
+          <button className="pets-carousel__nav pets-carousel__nav--next" type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1)}><Icon name="arrow" /></button>
+        </div>
+        <div className="pets-carousel__controls">
+          <span aria-live={paused || hovered ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
         </div>
         <div className="pets-carousel__thumbnails" aria-label="Elegir foto">
           {petPhotos.map((photo, index) => (
@@ -350,19 +348,23 @@ const storySteps: { label: string; title: string; text: string; items: Feature[]
     ],
   },
 ]
-const sectionNavigation = [
-  { id: "punto-de-partida", label: "El punto de partida" },
-  { id: "funcionalidades", label: "Funcionalidades" },
-  ...storySteps.map((step, index) => ({
-    id: `funcionalidades-${index}`,
-    label: step.label,
-  })),
-  { id: "equipo", label: "Equipo Nexo" },
-  { id: "aplicacion", label: "Conocé la aplicación" },
-]
-
 export default function App() {
-  const [activeSection, setActiveSection] = useState(-1)
+  const [showBackToTop, setShowBackToTop] = useState(false)
+
+  useEffect(() => {
+    const section = document.getElementById("aplicacion")
+    if (!section) return
+    const updateVisibility = () => {
+      setShowBackToTop(section.getBoundingClientRect().top <= window.innerHeight * 0.2)
+    }
+    updateVisibility()
+    window.addEventListener("scroll", updateVisibility, { passive: true })
+    window.addEventListener("resize", updateVisibility)
+    return () => {
+      window.removeEventListener("scroll", updateVisibility)
+      window.removeEventListener("resize", updateVisibility)
+    }
+  }, [])
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return
@@ -389,30 +391,6 @@ export default function App() {
       targets.forEach((target) => target.classList.remove("reveal", "is-revealed"))
     }
   }, [])
-
-  useEffect(() => {
-    const updateSection = () => {
-      const threshold = window.innerHeight * 0.35
-      let current = -1
-      sectionNavigation.forEach(({ id }, index) => {
-        const section = document.getElementById(id)
-        if (section && section.getBoundingClientRect().top <= threshold) {
-          current = index
-        }
-      })
-      setActiveSection(current)
-    }
-
-    updateSection()
-    window.addEventListener("scroll", updateSection, { passive: true })
-    window.addEventListener("resize", updateSection)
-    return () => {
-      window.removeEventListener("scroll", updateSection)
-      window.removeEventListener("resize", updateSection)
-    }
-  }, [])
-
-  const nextSection = sectionNavigation[activeSection + 1]
 
   return (
     <main id="inicio">
@@ -587,7 +565,7 @@ export default function App() {
           </div>
           <div className="story-invitation">
             <div className="animal-progress" aria-labelledby="animal-progress-title">
-              <h3 id="animal-progress-title">No cambiás el mundo,<br /><em>pero sí su mundo.</em></h3>
+              <h3 id="animal-progress-title">No cambiás el mundo,<br /><em>pero sí SU mundo.</em></h3>
               <div className="animal-progress__photos">
                 {[
                   { src: progressStart, caption: "El comienzo", alt: "Un gato negro visto desde arriba al inicio de su historia" },
@@ -696,15 +674,14 @@ export default function App() {
       <footer>
         <div className="shell footer__inner">
           <span>Manada Solidaria</span>
-          <span>Proyecto académico · Equipo Nexo · 2026</span>
+          <div className="footer__logos">
+            <img className="footer__utn" src="/isologotipo-utn-blanco.svg" alt="Universidad Tecnológica Nacional" loading="lazy" />
+            <span>Proyecto académico · Equipo Nexo · 2026</span>
+          </div>
         </div>
       </footer>
-      {activeSection >= 0 && (
-        <a
-          className={`section-navigation ${nextSection ? "" : "section-navigation--top"}`}
-          href={nextSection ? `#${nextSection.id}` : "#inicio"}
-          aria-label={nextSection ? `Ir a ${nextSection.label}` : "Volver al inicio"}
-        >
+      {showBackToTop && (
+        <a className="section-navigation section-navigation--top" href="#inicio" aria-label="Volver al inicio" title="Volver al inicio">
           <Icon name="arrow" />
         </a>
       )}
