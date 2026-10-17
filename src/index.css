@@ -920,7 +920,10 @@ h1 em {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  /* Color visible en los espacios que deja la captura dentro del mockup. */
+  background: #fff;
+}
+
+.product-scene--4 .app-mockup__screen {
   background: var(--cream);
 }
 
