@@ -7,6 +7,9 @@ import User from "./icons/User"
 import BriefcaseMedical from "./icons/BriefcaseMedical"
 import Stethoscope from "./icons/Stethoscope"
 import { IPhoneMockup } from "react-device-mockup"
+import progressStart from "../progreso/1.jpeg"
+import progressCare from "../progreso/2.jpeg"
+import progressToday from "../progreso/3.jpeg"
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
 
 const petPhotos = Object.entries(import.meta.glob<string>("../mascotas/**/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}", { eager: true, query: "?url", import: "default" }))
@@ -583,9 +586,23 @@ export default function App() {
             ))}
           </div>
           <div className="story-invitation">
-            <PersonalityPhoto photo="flowers" />
+            <div className="animal-progress" aria-labelledby="animal-progress-title">
+              <h3 id="animal-progress-title">No cambiás el mundo,<br /><em>pero sí su mundo.</em></h3>
+              <div className="animal-progress__photos">
+                {[
+                  { src: progressStart, caption: "El comienzo", alt: "Un gato negro visto desde arriba al inicio de su historia" },
+                  { src: progressCare, caption: "El cuidado", alt: "El gato negro con un collar protector durante sus cuidados" },
+                  { src: progressToday, caption: "Un nuevo presente", alt: "El gato negro sentado, con su pelaje abundante" },
+                ].map((photo, index) => (
+                  <figure className="animal-progress__photo" key={photo.src}>
+                    <img src={photo.src} alt={photo.alt} loading="lazy" />
+                    <figcaption><span>0{index + 1}</span>{photo.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
             <PawPrint aria-hidden="true" />
-            <p>Tu forma de ayudar también tiene un lugar en la manada.</p>
+            <p>Vos también podés cambiar el mundo de un animal, sumate.</p>
             <a className="primary-cta" href="https://www.manadasolidaria.com" target="_blank" rel="noopener noreferrer">Conocé la aplicación <Icon name="arrow" /></a>
           </div>
         </div>
@@ -648,7 +665,7 @@ export default function App() {
         <div className="shell closing__card">
           <div className="closing__copy">
             <span className="closing__eyebrow">Formá parte</span>
-            <h2>Tu forma de ayudar también tiene un lugar en la manada.</h2>
+            <h2>Vos también podés cambiar el mundo de un animal. Sumate a la manada.</h2>
             <p>
               Seguí a Manada Solidaria en Instagram para conocer las novedades
               del proyecto y dejarnos tu opinión en la encuesta. Tu feedback

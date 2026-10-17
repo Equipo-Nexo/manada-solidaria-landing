@@ -847,6 +847,21 @@ h1 em {
 }
 
 .story-invitation > svg { width: 32px; height: 32px; color: var(--lilac); }
+.animal-progress { width: 100%; max-width: 940px; margin-bottom: 32px; }
+.animal-progress h3 { color: var(--white); font-size: clamp(30px, 4vw, 52px); font-weight: 800; line-height: 1.15; letter-spacing: -0.035em; text-wrap: balance; }
+.animal-progress h3 em { color: var(--lilac); font-style: normal; }
+.animal-progress__photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 40px; }
+.animal-progress__photo { position: relative; min-width: 0; margin: 0; }
+.animal-progress__photo img { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: contain; border-radius: 20px; }
+.animal-progress__photo figcaption { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; color: var(--white); font-size: 15px; font-weight: 600; line-height: 1.4; }
+.animal-progress__photo figcaption span { color: var(--lilac); font-size: 12px; }
+
+@media (max-width: 600px) {
+  .animal-progress__photos { gap: 10px; margin-top: 28px; }
+  .animal-progress__photo img { border-radius: 10px; }
+  .animal-progress__photo figcaption { flex-direction: column; gap: 4px; font-size: 12px; }
+  .story-invitation:has(.animal-progress) { padding-inline: 0; }
+}
 .story-invitation > p { max-width: 650px; color: var(--white); font-size: clamp(29.12px, 3.36vw, 42.56px); font-weight: 800; line-height: 1.25; letter-spacing: -0.03em; }
 
 @media (max-width: 1100px) {
