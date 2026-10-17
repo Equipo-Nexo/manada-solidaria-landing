@@ -920,7 +920,8 @@ h1 em {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: #fff;
+  /* Color visible en los espacios que deja la captura dentro del mockup. */
+  background: var(--cream);
 }
 
 .product-scene .story-phone figcaption { color: rgba(255, 255, 255, 0.75); font-weight: 700; }
@@ -1578,16 +1579,33 @@ footer {
   }
 
   .hero__footer {
-    justify-content: flex-start;
-    gap: 13px;
-    height: 70px;
-    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    height: auto;
+    padding-block: 24px;
+    font-size: clamp(7px, 2.1vw, 11px);
+    letter-spacing: 0.025em;
     white-space: nowrap;
   }
 
-  .hero__footer span:last-child,
-  .hero__footer i:nth-last-child(2) {
+  .hero__footer i {
     display: none;
+  }
+
+  .hero__footer span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .hero__footer span::before {
+    flex: none;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--lilac);
+    content: "";
   }
 
   .section-heading {
@@ -1735,7 +1753,7 @@ footer {
   }
 
   .hero__footer {
-    font-size: 10.08px;
+    font-size: clamp(7px, 2.1vw, 9px);
   }
 
   .section {
