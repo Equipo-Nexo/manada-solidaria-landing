@@ -9,6 +9,8 @@ COPY index.html vite.config.ts ./
 COPY .figma/make/site.json ./.figma/make/site.json
 COPY src ./src
 COPY public ./public
+COPY progreso ./progreso
+COPY mascotas ./mascotas
 
 RUN npm run build
 
