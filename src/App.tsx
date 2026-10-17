@@ -9,6 +9,90 @@ import Stethoscope from "./icons/Stethoscope"
 import { IPhoneMockup } from "react-device-mockup"
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
 
+const petPhotos = Object.entries(import.meta.glob<string>("../mascotas/**/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}", { eager: true, query: "?url", import: "default" }))
+  .sort(([first], [second]) => first.localeCompare(second))
+  .map(([path, src]) => ({ path, src }))
+
+function PetsCarousel() {
+  const track = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const respectPreference = () => {
+      if (preference.matches) setPaused(true)
+    }
+    respectPreference()
+    preference.addEventListener("change", respectPreference)
+    return () => preference.removeEventListener("change", respectPreference)
+  }, [])
+
+  useEffect(() => {
+    if (paused || hovered || focused || petPhotos.length < 2) return
+    const timer = window.setInterval(() => {
+      if (!document.hidden) {
+        const element = track.current
+        element?.scrollTo({ left: ((active + 1) % petPhotos.length) * element.clientWidth, behavior: "smooth" })
+      }
+    }, 5000)
+    return () => window.clearInterval(timer)
+  }, [active, paused, hovered, focused])
+
+  const goTo = (index: number) => {
+    const element = track.current
+    if (!element) return
+    const target = Math.max(0, Math.min(index, petPhotos.length - 1))
+    element.scrollTo({ left: target * element.clientWidth, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
+  }
+
+  if (!petPhotos.length) return null
+
+  return (
+    <section className="pets-carousel" aria-labelledby="pets-title" aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false)
+    }} onTouchStart={() => setPaused(true)}>
+      <div className="pets-carousel__intro">
+        <span className="section-kicker"><PawPrint aria-hidden="true" /> También son parte del equipo</span>
+        <h3 id="pets-title">Nuestras mascotas</h3>
+        <p>Nos acompañan todos los días y nos recuerdan por qué vale la pena construir una red para ayudar.</p>
+        <div className="pets-carousel__controls">
+          <button type="button" aria-label="Ver foto anterior" aria-controls="pets-photos" disabled={active === 0} onClick={() => goTo(active - 1)}><Icon name="arrow" /></button>
+          <span aria-live={paused || hovered || focused ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
+          <button type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1)}><Icon name="arrow" /></button>
+          <button type="button" aria-label={paused ? "Reanudar carrusel automático" : "Pausar carrusel automático"} onClick={() => setPaused(!paused)}>{paused ? "▶" : "Ⅱ"}</button>
+        </div>
+      </div>
+      <div className="pets-carousel__gallery">
+        <div id="pets-photos" className="pets-carousel__track" ref={track} tabIndex={0} aria-label="Fotos de nuestras mascotas" onScroll={(event) => {
+          const element = event.currentTarget
+          setActive(Math.max(0, Math.min(petPhotos.length - 1, Math.round(element.scrollLeft / element.clientWidth))))
+        }} onKeyDown={(event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault()
+            goTo(active + (event.key === "ArrowRight" ? 1 : -1))
+          }
+        }}>
+          {petPhotos.map((photo, index) => (
+            <div className="pets-carousel__slide" key={photo.path} role="group" aria-roledescription="diapositiva" aria-label={`${index + 1} de ${petPhotos.length}`}>
+              <img src={photo.src} alt={`Nuestras mascotas: foto ${index + 1}`} loading="lazy" />
+            </div>
+          ))}
+        </div>
+        <div className="pets-carousel__thumbnails" aria-label="Elegir foto">
+          {petPhotos.map((photo, index) => (
+            <button type="button" key={photo.path} aria-label={`Ver foto ${index + 1}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}>
+              <img src={photo.src} alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 const personalityPhotos = {
   flowers: { src: "/foto_perro_con_flor.jpeg", caption: "Un poquito de amor cambia todo" },
 }
@@ -549,6 +633,7 @@ export default function App() {
             ))}
           </div>
         </div>
+        <div className="shell"><PetsCarousel /></div>
       </section>
 
       <section id="aplicacion" className="closing section">
@@ -567,7 +652,7 @@ export default function App() {
           </div>
           <div className="qr-area">
             <img src='qr-prod.svg' />
-            <p>Escaneá para conocer la propuesta</p>
+            <p>Escaneá para formar parte</p>
           </div>
         </div>
       </section>
