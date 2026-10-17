@@ -829,7 +829,7 @@ h1 em {
 
 .story-phone { width: min(100%, 260px); min-width: 0; margin: 0; }
 .story-phone .feature-card__screenshot { width: 100%; margin: 0; }
-.story-phone figcaption { margin-top: 16px; color: rgba(255, 255, 255, 0.65); font-size: 12.32px; font-weight: 600; text-align: center; }
+.story-phone figcaption { width: 100%; min-width: 0; box-sizing: border-box; padding-inline: 4px; margin-top: 16px; color: rgba(255, 255, 255, 0.65); font-size: 12.32px; font-weight: 600; text-align: center; text-wrap: balance; }
 .story-step__visual--pair .story-phone { flex: 1; max-width: 230px; }
 .story-step__visual--pair .story-phone:nth-child(2) { margin-top: 80px; }
 .story-step:nth-child(even) .story-step__copy { grid-column: 2; grid-row: 1; }
@@ -1929,7 +1929,7 @@ footer {
 
 @media (max-width: 900px) {
   .product-scene .story-phone { display: flex; flex-direction: column; }
-  .product-scene .story-phone figcaption { order: -1; margin: 0 0 14px; min-height: 3em; display: flex; align-items: center; justify-content: center; overflow-wrap: normal; }
+  .product-scene .story-phone figcaption { order: -1; margin: 0 0 14px; min-height: 3em; display: grid; place-items: center; overflow-wrap: normal; text-align: center; }
 }
 
 @media (max-width: 600px) {

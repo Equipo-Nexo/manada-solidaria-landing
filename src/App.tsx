@@ -301,6 +301,14 @@ type Feature = {
   screenshot?: string
 }
 
+const mockupCaptions: Record<string, ReactNode> = {
+  "Publicaciones de animales": <>Publicaciones<br />de animales</>,
+  "La historia de cada animal": <>La historia<br />de cada animal</>,
+  "Mapa de publicaciones": <>Mapa de<br />publicaciones</>,
+  "Publicaciones en la zona": <>Publicaciones<br />en la zona</>,
+  "Botón de emergencia": <>Botón de<br />emergencia</>,
+}
+
 const storySteps: { label: string; title: string; text: string; items: Feature[] }[] = [
   {
     label: "Un caso que nos moviliza",
@@ -549,7 +557,7 @@ export default function App() {
                   {step.items.filter((item) => item.screenshot).map((feature) => (
                     <figure className="story-phone" key={feature.title}>
                       <AppMockup src={feature.screenshot!} title={feature.title} />
-                      <figcaption>{feature.title}</figcaption>
+                      <figcaption><span>{mockupCaptions[feature.title] ?? feature.title}</span></figcaption>
                     </figure>
                   ))}
                   {index === 4 && (
