@@ -177,40 +177,53 @@ type Feature = {
   screenshot?: string
 }
 
-const featureGroups: { title: string; description: string; items: Feature[] }[] = [
+const storySteps: { label: string; title: string; text: string; items: Feature[] }[] = [
   {
-    title: "Ayudar a los animales",
-    description: "Encontrá casos y distintas formas de dar una mano.",
+    label: "Un caso que nos moviliza",
+    title: "Todo empieza con un animal que necesita ayuda.",
+    text: "Encontraste un animal, perdiste al tuyo o querés ayudar a encontrarle un hogar. Una publicación puede ser el primer paso para cambiar su historia.",
+    items: [{ icon: PawPrint, title: "Publicaciones de animales", text: "Perdidos, encontrados y en adopción, en un mismo lugar.", screenshot: "/screen_animal_perdido.jpeg" }],
+  },
+  {
+    label: "Mirar a nuestro alrededor",
+    title: "La ayuda puede estar más cerca de lo que pensás.",
+    text: "Descubrí qué está pasando en tu zona. El mapa te permite ubicar las publicaciones y encontrar dónde podés dar una mano.",
+    items: [{ icon: Map, title: "Mapa de publicaciones", text: "Encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" }],
+  },
+  {
+    label: "Pasar a la acción",
+    title: "Hay muchas maneras de hacer la diferencia.",
+    text: "Cada caso necesita algo distinto. Sumate a una campaña o colaborá con una colecta para acercar los recursos que hacen falta.",
     items: [
-      { icon: PawPrint, title: "Publicaciones de animales", text: "Conocé animales perdidos, encontrados y en adopción.", screenshot: "/screen_animal_perdido.jpeg" },
-      { icon: HandHeart, title: "Campañas", text: "Descubrí iniciativas solidarias y cómo participar.", screenshot: "/screen_campaña.png" },
+      { icon: HandHeart, title: "Campañas", text: "Descubrí iniciativas y cómo participar.", screenshot: "/screen_campaña.png" },
       { icon: DollarSign, title: "Colectas", text: "Colaborá con los recursos que necesita cada caso.", screenshot: "/screen_colecta.png" },
-      { icon: Map, title: "Mapa de publicaciones", text: "Ubicá todas las publicaciones y encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
     ],
   },
   {
-    title: "Comunidad",
-    description: "Conectá con las personas que forman parte de la red.",
+    label: "Encontrarnos en comunidad",
+    title: "Detrás de cada ayuda, hay personas.",
+    text: "Conocé a quienes forman parte de la red y compartí cómo podés colaborar. Cuando nos encontramos, organizar la ayuda es más fácil.",
     items: [
-      { icon: Users, title: "Comunidad", text: "Encontrá personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
-      { icon: User, title: "Perfil", text: "Mostrá quién sos y cómo participás en Manada Solidaria.", screenshot: "/screen_perfil.png" },
+      { icon: Users, title: "Comunidad", text: "Personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
+      { icon: User, title: "Perfil", text: "Mostrá quién sos y cómo participás en la manada.", screenshot: "/screen_perfil.png" },
     ],
   },
   {
-    title: "Emergencias",
-    description: "Accedé rápido a la información cuando más importa.",
+    label: "Estar cuando más importa",
+    title: "Cuando hay una urgencia, cada minuto cuenta.",
+    text: "Consultá veterinarias y sus datos de contacto. El botón de emergencia reúne opciones de ayuda para acceder rápidamente cuando las necesitás.",
     items: [
-      { icon: BriefcaseMedical, title: "Veterinarias", text: "Consultá veterinarias y sus datos de contacto." },
-      { icon: Stethoscope, title: "Botón de emergencia", text: "Accedé rápidamente a las opciones de ayuda ante una urgencia.", screenshot: "/screen_boton_guardia.png" },
+      { icon: BriefcaseMedical, title: "Veterinarias", text: "Información de contacto para buscar atención." },
+      { icon: Stethoscope, title: "Botón de emergencia", text: "Acceso rápido a las opciones de ayuda.", screenshot: "/screen_boton_guardia.png" },
     ],
   },
 ]
 const sectionNavigation = [
   { id: "punto-de-partida", label: "El punto de partida" },
   { id: "funcionalidades", label: "Funcionalidades" },
-  ...featureGroups.map((group, index) => ({
+  ...storySteps.map((step, index) => ({
     id: `funcionalidades-${index}`,
-    label: group.title,
+    label: step.label,
   })),
   { id: "equipo", label: "Equipo Nexo" },
   { id: "aplicacion", label: "Conocé la aplicación" },
@@ -223,7 +236,7 @@ export default function App() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return
 
     const targets = document.querySelectorAll<HTMLElement>(
-      ".hero__copy > *, .hero__visual, .section-heading, .problem-card, .challenge__connector, .solution-card, .feature-group__heading, .feature-card, .team__intro, .member, .closing__copy, .qr-area",
+      ".hero__copy > *, .hero__visual, .section-heading, .problem-card, .challenge__connector, .solution-card, .story-step__copy, .story-step__visual, .team__intro, .member, .closing__copy, .qr-area",
     )
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -397,54 +410,47 @@ export default function App() {
             <div className="section-heading section-heading--light">
               <span className="section-number">02</span>
               <div>
-                <span className="section-kicker">Funcionalidades</span>
-                <h2>Todo lo necesario para activar una red solidaria.</h2>
+                <span className="section-kicker">Así funciona Manada Solidaria</span>
+                <h2>Un animal necesita ayuda. Una comunidad puede cambiar su historia.</h2>
               </div>
             </div>
-            <p>
-              El alcance del proyecto contempla herramientas para informar,
-              buscar, conectar y acompañar.
-            </p>
+            <p>Desde la primera publicación hasta encontrar cómo colaborar, recorré las herramientas que nos acercan.</p>
           </div>
 
-          <div className="feature-groups">
-            {featureGroups.map((group, groupIndex) => (
-              <section id={`funcionalidades-${groupIndex}`} className="feature-group" key={group.title} aria-labelledby={`feature-group-${groupIndex}`}>
-                <div className="feature-group__heading">
-                  <span className="feature-group__number">0{groupIndex + 1}</span>
-                  <div>
-                    <h3 id={`feature-group-${groupIndex}`}>{group.title}</h3>
-                    <p>{group.description}</p>
+          <div className="product-story">
+            {storySteps.map((step, index) => (
+              <section id={`funcionalidades-${index}`} className="story-step" key={step.label} aria-labelledby={`story-title-${index}`}>
+                <span className="story-step__marker" aria-hidden="true"><PawPrint /></span>
+                <div className="story-step__copy">
+                  <span className="story-step__eyebrow">0{index + 1} / {step.label}</span>
+                  <h3 id={`story-title-${index}`}>{step.title}</h3>
+                  <p>{step.text}</p>
+                  <div className="story-step__details">
+                    {step.items.map((feature) => (
+                      <div className="story-detail" key={feature.title}>
+                        <span className="feature-card__icon"><feature.icon aria-hidden="true" /></span>
+                        <div><h4>{feature.title}</h4><p>{feature.text}</p></div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="feature-grid">
-                  {group.items.map((feature) => (
-                    <article className="feature-card" key={feature.title}>
-                      <div className="feature-card__copy">
-                        <span className="feature-card__icon"><feature.icon aria-hidden="true" /></span>
-                        <h4>{feature.title}</h4>
-                        <p>{feature.text}</p>
-                      </div>
+                <div className={`story-step__visual${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
+                  {step.items.filter((item) => item.screenshot).map((feature) => (
+                    <figure className="story-phone" key={feature.title}>
                       <div className="feature-card__screenshot">
-                        {feature.screenshot ? (
-                          <img src={feature.screenshot} alt={`Captura de la aplicación: ${feature.title}`} loading="lazy" />
-                        ) : (
-                          <div className="feature-card__placeholder">
-                            <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-                              <rect x="3" y="3" width="18" height="18" rx="3" />
-                              <circle cx="8.5" cy="8.5" r="1.5" />
-                              <path d="m3 17 5-5 4 4 4-6 5 7" />
-                            </svg>
-                            <span>Captura de {feature.title.toLocaleLowerCase("es")}</span>
-                            <small>Próximamente</small>
-                          </div>
-                        )}
+                        <img src={feature.screenshot} alt={`Captura de la aplicación: ${feature.title}`} loading="lazy" />
                       </div>
-                    </article>
+                      <figcaption>{feature.title}</figcaption>
+                    </figure>
                   ))}
                 </div>
               </section>
             ))}
+          </div>
+          <div className="story-invitation">
+            <PawPrint aria-hidden="true" />
+            <p>Tu forma de ayudar también tiene un lugar en la manada.</p>
+            <a className="primary-cta" href="#aplicacion">Conocé la aplicación <Icon name="arrow" /></a>
           </div>
           <p className="scope-note">
             <span>Alcance proyectado</span>
@@ -499,7 +505,7 @@ export default function App() {
         <div className="shell closing__card">
           <div className="closing__copy">
             <span className="closing__eyebrow">Conocé la aplicación</span>
-            <h2>Sumate a una comunidad que transforma intención en ayuda.</h2>
+            <h2>Tu forma de ayudar también tiene un lugar en la manada.</h2>
             <p>
               Explorá Manada Solidaria y descubrí una nueva manera de conectar
               por el bienestar animal.
@@ -510,7 +516,7 @@ export default function App() {
             </div>
           </div>
           <div className="qr-area">
-            <img src='qr-manada.png' />
+            <img src='qr-prod.svg' />
             <p>Escaneá para conocer la propuesta</p>
           </div>
         </div>
