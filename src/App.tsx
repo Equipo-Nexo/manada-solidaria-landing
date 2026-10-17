@@ -8,6 +8,23 @@ import BriefcaseMedical from "./icons/BriefcaseMedical"
 import Stethoscope from "./icons/Stethoscope"
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
 
+const personalityPhotos = {
+  kitten: { src: "/gatito.jpeg", caption: "¿Hay lugar para uno más?" },
+  curious: { src: "/foto_perro_salchicha_mirando.jpeg", caption: "Alguien cerca te necesita" },
+  smile: { src: "/foto_perro_sonriendo.jpeg", caption: "Así se siente ser parte" },
+  flowers: { src: "/foto_perro_con_flor.jpeg", caption: "Un poquito de amor cambia todo" },
+}
+
+function PersonalityPhoto({ photo, className = "" }: { photo: keyof typeof personalityPhotos; className?: string }) {
+  const { src, caption } = personalityPhotos[photo]
+  return (
+    <figure className={`personality-photo personality-photo--${photo} ${className}`} aria-hidden="true">
+      <div className="personality-photo__image"><img src={src} alt="" loading="lazy" /></div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  )
+}
+
 function WalkingPaws() {
   const container = useRef<HTMLDivElement>(null)
   const [trail, setTrail] = useState<{ x: number; y: number; angle: number; length: number; cycle: number } | null>(null)
@@ -331,6 +348,7 @@ export default function App() {
             </div>
             <div className="hero__paw paw paw--one">●</div>
             <div className="hero__paw paw paw--two">●</div>
+            <PersonalityPhoto photo="kitten" className="hero__snapshot" />
           </div>
         </div>
         <div className="hero__footer shell">
@@ -433,6 +451,8 @@ export default function App() {
                       </div>
                     ))}
                   </div>
+                  {index === 1 && <PersonalityPhoto photo="curious" className="story-step__snapshot" />}
+                  {index === 3 && <PersonalityPhoto photo="smile" className="story-step__snapshot" />}
                 </div>
                 <div className={`story-step__visual${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
                   {step.items.filter((item) => item.screenshot).map((feature) => (
@@ -448,6 +468,7 @@ export default function App() {
             ))}
           </div>
           <div className="story-invitation">
+            <PersonalityPhoto photo="flowers" />
             <PawPrint aria-hidden="true" />
             <p>Tu forma de ayudar también tiene un lugar en la manada.</p>
             <a className="primary-cta" href="#aplicacion">Conocé la aplicación <Icon name="arrow" /></a>

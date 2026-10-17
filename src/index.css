@@ -668,6 +668,58 @@ h1 em {
   margin-top: 72px;
 }
 
+.personality-photo {
+  --photo-tilt: -6deg;
+  width: 164px;
+  flex: none;
+  margin: 0;
+  padding: 9px 9px 14px;
+  border-radius: 4px;
+  background: var(--white);
+  box-shadow: 0 12px 28px rgba(56, 41, 35, 0.2);
+  transform: rotate(var(--photo-tilt));
+}
+
+.personality-photo__image {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--cream);
+}
+
+.personality-photo__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.personality-photo figcaption {
+  margin-top: 10px;
+  color: var(--brown);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.personality-photo--kitten .personality-photo__image img { object-position: left bottom; }
+.personality-photo--smile { --photo-tilt: 5deg; }
+.personality-photo--flowers { --photo-tilt: 5deg; width: 180px; }
+.hero__snapshot { position: absolute; bottom: 12px; left: 0; z-index: 2; }
+.story-step__snapshot { margin: 32px 12px 8px auto; }
+.story-invitation > .personality-photo { margin-bottom: 16px; }
+
+@media (max-width: 900px) {
+  .hero__snapshot { bottom: 0; left: 4px; width: 142px; }
+  .story-step__snapshot { width: 148px; margin-right: 16px; }
+}
+
+@media (max-width: 420px) {
+  .hero__snapshot { width: 125px; }
+  .personality-photo figcaption { font-size: 11px; }
+}
+
 .product-story {
   position: relative;
   z-index: 2;
