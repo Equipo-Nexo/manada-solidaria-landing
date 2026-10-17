@@ -6,6 +6,7 @@ import Users from "./icons/Users"
 import User from "./icons/User"
 import BriefcaseMedical from "./icons/BriefcaseMedical"
 import Stethoscope from "./icons/Stethoscope"
+import { IPhoneMockup } from "react-device-mockup"
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
 
 const personalityPhotos = {
@@ -22,6 +23,30 @@ function PersonalityPhoto({ photo, className = "" }: { photo: keyof typeof perso
       <div className="personality-photo__image"><img src={src} alt="" loading="lazy" /></div>
       <figcaption>{caption}</figcaption>
     </figure>
+  )
+}
+
+function AppMockup({ src, title }: { src: string; title: string }) {
+  const container = useRef<HTMLDivElement>(null)
+  const [screenWidth, setScreenWidth] = useState(220)
+
+  useEffect(() => {
+    const element = container.current
+    if (!element) return
+    const observer = new ResizeObserver(([entry]) => {
+      // Leave room for the library's bezel and side buttons.
+      setScreenWidth(Math.max(1, Math.floor(entry.contentRect.width / 1.08)))
+    })
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div className="app-mockup" ref={container}>
+      <IPhoneMockup screenWidth={screenWidth} screenType="island" frameColor="#252525" hideStatusBar hideNavBar>
+        <img className="app-mockup__screen" src={src} alt={`Captura de la aplicación: ${title}`} loading="lazy" />
+      </IPhoneMockup>
+    </div>
   )
 }
 
@@ -454,15 +479,19 @@ export default function App() {
                   {index === 1 && <PersonalityPhoto photo="curious" className="story-step__snapshot" />}
                   {index === 3 && <PersonalityPhoto photo="smile" className="story-step__snapshot" />}
                 </div>
-                <div className={`story-step__visual${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
+                <div className={`story-step__visual product-scene product-scene--${index}${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
                   {step.items.filter((item) => item.screenshot).map((feature) => (
                     <figure className="story-phone" key={feature.title}>
-                      <div className="feature-card__screenshot">
-                        <img src={feature.screenshot} alt={`Captura de la aplicación: ${feature.title}`} loading="lazy" />
-                      </div>
+                      <AppMockup src={feature.screenshot!} title={feature.title} />
                       <figcaption>{feature.title}</figcaption>
                     </figure>
                   ))}
+                  {(index === 0 || index === 1 || index === 4) && (
+                    <div className={`product-zoom product-zoom--${index === 4 ? "emergency" : "publication"}`}>
+                      <span className="product-zoom__label">{index === 0 ? "Cada caso tiene una historia" : index === 1 ? "Del mapa a su historia" : "La ayuda, a un toque"}</span>
+                      <div className="product-zoom__crop" role="img" aria-label={index === 4 ? "Detalle de la aplicación: llamar a la guardia" : "Detalle de la publicación de Junior, un gato perdido"} />
+                    </div>
+                  )}
                 </div>
               </section>
             ))}

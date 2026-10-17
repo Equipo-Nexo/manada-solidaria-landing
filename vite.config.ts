@@ -17,6 +17,9 @@ export default defineConfig(({ mode }) => {
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
     },
+    optimizeDeps: {
+      include: ['react-device-mockup', 'tslib'],
+    },
     plugins: [
 react(),
       tailwindcss(),
