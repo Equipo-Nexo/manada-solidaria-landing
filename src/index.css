@@ -861,14 +861,14 @@ h1 em {
 .product-scene {
   position: relative;
   isolation: isolate;
-  padding: 48px 26px 100px;
+  padding: 48px 26px;
   background: transparent;
 }
 
 .product-scene .story-phone {
   position: relative;
   z-index: 1;
-  transform: rotate(-3deg);
+  transform: none;
 }
 
 .app-mockup {
@@ -888,12 +888,12 @@ h1 em {
 }
 
 .product-scene .story-phone figcaption { color: rgba(255, 255, 255, 0.75); font-weight: 700; }
-.product-scene--1 .story-phone { transform: rotate(3deg); }
-.product-scene--4 .story-phone { transform: rotate(-3deg); }
-.product-scene.story-step__visual--pair { gap: 8px; padding: 48px 24px 60px; }
-.product-scene.story-step__visual--pair .story-phone { transform: rotate(-3deg); }
-.product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { z-index: 2; margin-top: 36px; margin-left: 0; transform: rotate(3deg); }
-.product-scene--3.story-step__visual--pair .story-phone:first-of-type { transform: rotate(-3deg); }
+.product-scene--1 .story-phone { transform: none; }
+.product-scene--4 { padding-bottom: 100px; }
+.product-scene.story-step__visual--pair { align-items: flex-start; gap: 0; padding: 48px 24px 60px; }
+.product-scene.story-step__visual--pair .story-phone { transform: none; }
+.product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { z-index: 2; margin-top: 48px; margin-left: -32px; transform: none; }
+.product-scene--3.story-step__visual--pair .story-phone:first-of-type { transform: none; }
 
 .product-zoom {
   position: absolute;
@@ -910,29 +910,27 @@ h1 em {
 }
 
 .product-zoom__label { display: block; padding: 3px 5px 9px; color: var(--brown); font-size: 12px; font-weight: 700; }
-.product-zoom__crop { aspect-ratio: 738 / 363; border-radius: 10px; background-image: url('/screen_animal_perdido.jpeg'); background-size: 100% auto; background-position: center 82.3%; background-repeat: no-repeat; }
+.product-zoom__crop { border-radius: 10px; background-size: 100% auto; background-repeat: no-repeat; }
 .product-zoom--emergency .product-zoom__crop { aspect-ratio: 590 / 274; background-image: url('/screen_boton_guardia.png'); background-position: center 15.6%; }
-.product-scene--1 .product-zoom { right: auto; left: -8px; transform: rotate(-3deg); }
 
 @media (max-width: 1100px) {
   .product-scene.story-step__visual--pair { padding-inline: 18px; }
 }
 
 @media (max-width: 900px) {
-  .product-scene { padding: 36px 28px 100px; }
+  .product-scene { padding: 36px 28px; }
   .product-scene .story-phone { width: min(80%, 250px); }
-  .product-scene.story-step__visual--pair { align-items: flex-start; gap: 12px; padding: 30px 16px 24px; }
+  .product-scene.story-step__visual--pair { align-items: flex-start; gap: 0; padding: 30px 16px 24px; }
   .product-scene.story-step__visual--pair .story-phone,
-  .product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { flex: 1 1 0; width: 0; margin: 0; transform: rotate(-3deg); }
-  .product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { transform: rotate(3deg); }
+  .product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { flex: 1 1 0; width: 0; margin: 0; transform: none; }
+  .product-scene.story-step__visual--pair .story-phone:nth-of-type(2) { margin-top: 28px; margin-left: -20px; transform: none; }
   .product-scene .story-phone figcaption { font-size: 12px; }
   .product-zoom { right: 0; bottom: 40px; width: min(90%, 310px); }
-  .product-scene--1 .product-zoom { left: 0; }
 }
 
 @media (max-width: 420px) {
   .product-scene { padding-inline: 16px; }
-  .product-scene.story-step__visual--pair { gap: 10px; padding-inline: 10px; }
+  .product-scene.story-step__visual--pair { gap: 0; padding-inline: 10px; }
   .product-zoom__label { font-size: 11px; }
 }
 

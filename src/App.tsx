@@ -10,9 +10,6 @@ import { IPhoneMockup } from "react-device-mockup"
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode, type SVGProps } from "react"
 
 const personalityPhotos = {
-  kitten: { src: "/gatito.jpeg", caption: "¿Hay lugar para uno más?" },
-  curious: { src: "/foto_perro_salchicha_mirando.jpeg", caption: "Alguien cerca te necesita" },
-  smile: { src: "/foto_perro_sonriendo.jpeg", caption: "Así se siente ser parte" },
   flowers: { src: "/foto_perro_con_flor.jpeg", caption: "Un poquito de amor cambia todo" },
 }
 
@@ -224,13 +221,19 @@ const storySteps: { label: string; title: string; text: string; items: Feature[]
     label: "Un caso que nos moviliza",
     title: "Todo empieza con un animal que necesita ayuda.",
     text: "Encontraste un animal, perdiste al tuyo o querés ayudar a encontrarle un hogar. Una publicación puede ser el primer paso para cambiar su historia.",
-    items: [{ icon: PawPrint, title: "Publicaciones de animales", text: "Perdidos, encontrados y en adopción, en un mismo lugar.", screenshot: "/screen_animal_perdido.jpeg" }],
+    items: [
+      { icon: PawPrint, title: "Publicaciones de animales", text: "Perdidos, encontrados y en adopción, en un mismo lugar.", screenshot: "/screen_animales.jpeg" },
+      { icon: HandHeart, title: "La historia de cada animal", text: "Conocé los detalles de cada caso y cómo podés ayudar.", screenshot: "/screen_animal_perdido.jpeg" },
+    ],
   },
   {
     label: "Mirar a nuestro alrededor",
     title: "La ayuda puede estar más cerca de lo que pensás.",
     text: "Descubrí qué está pasando en tu zona. El mapa te permite ubicar las publicaciones y encontrar dónde podés dar una mano.",
-    items: [{ icon: Map, title: "Mapa de publicaciones", text: "Encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" }],
+    items: [
+      { icon: Map, title: "Mapa de publicaciones", text: "Encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
+      { icon: PawPrint, title: "Publicaciones en la zona", text: "Explorá los casos del área que seleccionás en el mapa.", screenshot: "/detalles_mapa.jpeg" },
+    ],
   },
   {
     label: "Pasar a la acción",
@@ -373,7 +376,6 @@ export default function App() {
             </div>
             <div className="hero__paw paw paw--one">●</div>
             <div className="hero__paw paw paw--two">●</div>
-            <PersonalityPhoto photo="kitten" className="hero__snapshot" />
           </div>
         </div>
         <div className="hero__footer shell">
@@ -476,8 +478,6 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-                  {index === 1 && <PersonalityPhoto photo="curious" className="story-step__snapshot" />}
-                  {index === 3 && <PersonalityPhoto photo="smile" className="story-step__snapshot" />}
                 </div>
                 <div className={`story-step__visual product-scene product-scene--${index}${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
                   {step.items.filter((item) => item.screenshot).map((feature) => (
@@ -486,10 +486,10 @@ export default function App() {
                       <figcaption>{feature.title}</figcaption>
                     </figure>
                   ))}
-                  {(index === 0 || index === 1 || index === 4) && (
-                    <div className={`product-zoom product-zoom--${index === 4 ? "emergency" : "publication"}`}>
-                      <span className="product-zoom__label">{index === 0 ? "Cada caso tiene una historia" : index === 1 ? "Del mapa a su historia" : "La ayuda, a un toque"}</span>
-                      <div className="product-zoom__crop" role="img" aria-label={index === 4 ? "Detalle de la aplicación: llamar a la guardia" : "Detalle de la publicación de Junior, un gato perdido"} />
+                  {index === 4 && (
+                    <div className="product-zoom product-zoom--emergency">
+                      <span className="product-zoom__label">La ayuda, a un toque</span>
+                      <div className="product-zoom__crop" role="img" aria-label="Detalle de la aplicación: llamar a la guardia" />
                     </div>
                   )}
                 </div>
