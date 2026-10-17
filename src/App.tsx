@@ -94,7 +94,7 @@ function PetsCarousel() {
 }
 
 const personalityPhotos = {
-  flowers: { src: "/foto_perro_con_flor.jpeg", caption: "Un poquito de amor cambia todo" },
+  flowers: { src: "/foto_perro_con_flor.jpeg", caption: "No cambiás el mundo, pero sí su mundo" },
 }
 
 function PersonalityPhoto({ photo, className = "" }: { photo: keyof typeof personalityPhotos; className?: string }) {
@@ -306,13 +306,13 @@ const storySteps: { label: string; title: string; text: string; items: Feature[]
     title: "Todo empieza con un animal que necesita ayuda.",
     text: "Encontraste un animal, perdiste al tuyo o querés ayudar a encontrarle un hogar. Una publicación puede ser el primer paso para cambiar su historia.",
     items: [
-      { icon: PawPrint, title: "Publicaciones de animales", text: "Perdidos, encontrados y en adopción, en un mismo lugar.", screenshot: "/screen_animales.jpeg" },
+      { icon: PawPrint, title: "Publicaciones de animales", text: "Perdidos, en la calle y en adopción, en un mismo lugar.", screenshot: "/screen_animales.jpeg" },
       { icon: HandHeart, title: "La historia de cada animal", text: "Conocé los detalles de cada caso y cómo podés ayudar.", screenshot: "/screen_animal_perdido.jpeg" },
     ],
   },
   {
     label: "Mirar a nuestro alrededor",
-    title: "La ayuda puede estar más cerca de lo que pensás.",
+    title: "Quien necesita tu ayuda está más cerca de lo que pensás.",
     text: "Descubrí qué está pasando en tu zona. El mapa te permite ubicar las publicaciones y encontrar dónde podés dar una mano.",
     items: [
       { icon: Map, title: "Mapa de publicaciones", text: "Encontrá casos cerca tuyo.", screenshot: "/screen_mapa.png" },
@@ -331,7 +331,7 @@ const storySteps: { label: string; title: string; text: string; items: Feature[]
   {
     label: "Encontrarnos en comunidad",
     title: "Detrás de cada ayuda, hay personas.",
-    text: "Conocé a quienes forman parte de la red y compartí cómo podés colaborar. Cuando nos encontramos, organizar la ayuda es más fácil.",
+    text: "Conocé a quienes forman parte de la red. Cuando nos encontramos, organizar la ayuda es más fácil.",
     items: [
       { icon: Users, title: "Comunidad", text: "Personas y organizaciones dispuestas a colaborar.", screenshot: "/screen_comunidad.png" },
       { icon: User, title: "Perfil", text: "Mostrá quién sos y cómo participás en la manada.", screenshot: "/screen_perfil.png" },
@@ -340,10 +340,10 @@ const storySteps: { label: string; title: string; text: string; items: Feature[]
   {
     label: "Estar cuando más importa",
     title: "Cuando hay una urgencia, cada minuto cuenta.",
-    text: "Consultá veterinarias y sus datos de contacto. El botón de emergencia reúne opciones de ayuda para acceder rápidamente cuando las necesitás.",
+    text: "Consultá veterinarias, horarios y sus datos de contacto. El botón de emergencia te permite llamar rápidamente a la guardia veterinaria cuando la necesitás.",
     items: [
-      { icon: BriefcaseMedical, title: "Veterinarias", text: "Información de contacto para buscar atención." },
-      { icon: Stethoscope, title: "Botón de emergencia", text: "Acceso rápido a las opciones de ayuda.", screenshot: "/screen_boton_guardia.png" },
+      { icon: BriefcaseMedical, title: "Veterinarias", text: "Información de contacto para buscar atención.", screenshot: "/listado_veterinarias.png" },
+      { icon: Stethoscope, title: "Botón de emergencia", text: "Acceso rápido para llamar a la guardia veterinaria.", screenshot: "/screen_boton_guardia.png" },
     ],
   },
 ]
@@ -417,7 +417,7 @@ export default function App() {
         <div className="shell site-header__inner">
           <LogoPlaceholder />
           <div className="site-header__meta">
-            <span>Proyecto Final</span>
+            <span>Proyecto Final de Grado</span>
             <span className="site-header__dot" />
             <span>Equipo Nexo</span>
           </div>
@@ -496,9 +496,9 @@ export default function App() {
                 tiempo.
               </p>
               <div className="scattered-lines">
-                <span><Icon name="cruz" /> Informacion distribuida</span>
-                <span><Icon name="cruz" /> Falta de transparencia</span>
-                <span><Icon name="cruz" /> Dificultad para coordinar ayuda</span>
+                <span><Icon name="cruz" />Información distribuida</span>
+                <span><Icon name="cruz" />Cada vez más casos</span>
+                <span><Icon name="cruz" />Dificultad para coordinar ayuda</span>
               </div>
             </article>
 
@@ -562,6 +562,7 @@ export default function App() {
                       </div>
                     ))}
                   </div>
+
                 </div>
                 <div className={`story-step__visual product-scene product-scene--${index}${step.items.filter((item) => item.screenshot).length > 1 ? " story-step__visual--pair" : ""}`}>
                   {step.items.filter((item) => item.screenshot).map((feature) => (
@@ -576,6 +577,7 @@ export default function App() {
                       <div className="product-zoom__crop" role="img" aria-label="Detalle de la aplicación: llamar a la guardia" />
                     </div>
                   )}
+
                 </div>
               </section>
             ))}
@@ -584,13 +586,8 @@ export default function App() {
             <PersonalityPhoto photo="flowers" />
             <PawPrint aria-hidden="true" />
             <p>Tu forma de ayudar también tiene un lugar en la manada.</p>
-            <a className="primary-cta" href="#aplicacion">Conocé la aplicación <Icon name="arrow" /></a>
+            <a className="primary-cta" href="https://www.manadasolidaria.com" target="_blank" rel="noopener noreferrer">Conocé la aplicación <Icon name="arrow" /></a>
           </div>
-          <p className="scope-note">
-            <span>Alcance proyectado</span>
-            Algunas funcionalidades forman parte de la propuesta académica y
-            pueden encontrarse en distintas etapas de desarrollo.
-          </p>
         </div>
       </section>
 
@@ -617,42 +614,64 @@ export default function App() {
           </div>
           <div className="team__members">
             {[
-              ["abril", "Abril", "Conrero"],
-              ["elian", "Elian", "Enria"],
-              ["rocio", "Rocío", "Menardi"],
-              ["lucia", "Lucía", "Rosales"],
-              ["federico", "Federico", "Sanchez"],
-            ].map(([photo, name, surname]) => (
+              ["abril", "Abril", "Conrero", "Frontend Developer & UX Designer"],
+              ["elian", "Elian", "Enria", "Backend Developer"],
+              ["rocio", "Rocío", "Menardi", "Frontend Developer & UX Designer"],
+              ["lucia", "Lucía", "Rosales", "Backend Developer"],
+              ["federico", "Federico", "Sanchez", "Full Stack Developer"],
+            ].map(([photo, name, surname, role]) => (
               <article className="member" key={photo}>
                 <img className={`member__avatar${photo === "rocio" ? " member__avatar--rocio" : ""}`} src={`/foto_${photo}.png`} alt={`${name} ${surname}`} loading="lazy" />
                 <span className="member__name">
                   {name}
                   <strong>{surname}</strong>
+                  <span className="member__role">{role}</span>
                 </span>
               </article>
             ))}
           </div>
         </div>
-        <div className="shell"><PetsCarousel /></div>
+        <div className="shell">
+          <aside className="team-thanks" aria-labelledby="team-thanks-title">
+            <img className="team-thanks__logo" src="/somos_su_voz.png" alt="Logo de Somos Su Voz" loading="lazy" />
+            <div>
+              <h3 id="team-thanks-title">Este proyecto también creció con su ayuda</h3>
+              <p>Gracias a quienes nos acompañaron para hacer posible Manada Solidaria. Sumate a colaborar: conocé su trabajo, compartí sus publicaciones y descubrí cómo podés dar una mano. Cada aporte cuenta.</p>
+              <a href="https://www.instagram.com/somos.su.voz.vmvn/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el Instagram de @somos.su.voz.vmvn (se abre en otra pestaña)">@somos.su.voz.vmvn <Icon name="arrow" /></a>
+            </div>
+          </aside>
+          <PetsCarousel />
+        </div>
       </section>
 
       <section id="aplicacion" className="closing section">
         <div className="shell closing__card">
           <div className="closing__copy">
-            <span className="closing__eyebrow">Conocé la aplicación</span>
+            <span className="closing__eyebrow">Formá parte</span>
             <h2>Tu forma de ayudar también tiene un lugar en la manada.</h2>
             <p>
-              Explorá Manada Solidaria y descubrí una nueva manera de conectar
-              por el bienestar animal.
+              Seguí a Manada Solidaria en Instagram para conocer las novedades
+              del proyecto y dejarnos tu opinión en la encuesta. Tu feedback
+              nos ayuda a seguir mejorando y construyendo esta red solidaria.
             </p>
             <div className="closing__pill">
               <Icon name="location" />
               Villa María, Córdoba
             </div>
           </div>
-          <div className="qr-area">
-            <img src='qr-prod.svg' />
-            <p>Escaneá para formar parte</p>
+          <div className="closing__qr-options">
+            <div className="qr-area">
+              <span className="qr-area__step">01 / Seguinos</span>
+              <h3>Formá parte de la manada</h3>
+              <img src="/Instagramqr.svg" alt="QR para seguir a Manada Solidaria en Instagram" loading="lazy" />
+              <p><a href="https://www.instagram.com/manadasolidaria.vm/" target="_blank" rel="noopener noreferrer">Hacé click para formar parte</a></p>
+            </div>
+            <div className="qr-area">
+              <span className="qr-area__step">02 / Contanos</span>
+              <h3>Tu opinión suma</h3>
+              <img src="/form-qr.svg" alt="QR para responder la encuesta sobre Manada Solidaria" loading="lazy" />
+              <p><a href="https://forms.gle/5Smu4U77vyvyXgKm8" target="_blank" rel="noopener noreferrer">Hacé click para darnos tu opinión</a></p>
+            </div>
           </div>
         </div>
       </section>
