@@ -20,7 +20,6 @@ function PetsCarousel() {
   const track = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [hovered, setHovered] = useState(false)
   const [manualNavigation, setManualNavigation] = useState(0)
 
   useEffect(() => {
@@ -34,7 +33,7 @@ function PetsCarousel() {
   }, [])
 
   useEffect(() => {
-    if (paused || hovered || petPhotos.length < 2) return
+    if (paused || petPhotos.length < 2) return
     const timer = window.setInterval(() => {
       if (manualNavigation) setManualNavigation(0)
       if (!document.hidden) {
@@ -43,7 +42,7 @@ function PetsCarousel() {
       }
     }, manualNavigation ? 1500 : 3000)
     return () => window.clearInterval(timer)
-  }, [active, paused, hovered, manualNavigation])
+  }, [active, paused, manualNavigation])
 
   const goTo = (index: number, resumeSoon = false) => {
     const element = track.current
@@ -56,17 +55,7 @@ function PetsCarousel() {
   if (!petPhotos.length) return null
 
   return (
-    <section
-      className="pets-carousel"
-      aria-labelledby="pets-title"
-      aria-roledescription="carrusel"
-      onPointerEnter={(event) => {
-        if (event.pointerType === "mouse") setHovered(true)
-      }}
-      onPointerLeave={(event) => {
-        if (event.pointerType === "mouse") setHovered(false)
-      }}
-    >
+    <section className="pets-carousel" aria-labelledby="pets-title" aria-roledescription="carrusel">
       <div className="pets-carousel__intro">
         <span className="section-kicker"><PawPrint aria-hidden="true" /> También son parte del equipo</span>
         <h3 id="pets-title">Nuestras mascotas</h3>
@@ -93,7 +82,7 @@ function PetsCarousel() {
           <button className="pets-carousel__nav pets-carousel__nav--next" type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1, true)}><Icon name="arrow" /></button>
         </div>
         <div className="pets-carousel__controls">
-          <span aria-live={paused || hovered ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
+          <span aria-live={paused ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
         </div>
         <div className="pets-carousel__thumbnails" aria-label="Elegir foto">
           {petPhotos.map((photo, index) => (
