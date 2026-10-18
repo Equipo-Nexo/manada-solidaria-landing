@@ -53,7 +53,17 @@ function PetsCarousel() {
   if (!petPhotos.length) return null
 
   return (
-    <section className="pets-carousel" aria-labelledby="pets-title" aria-roledescription="carrusel" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <section
+      className="pets-carousel"
+      aria-labelledby="pets-title"
+      aria-roledescription="carrusel"
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") setHovered(true)
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === "mouse") setHovered(false)
+      }}
+    >
       <div className="pets-carousel__intro">
         <span className="section-kicker"><PawPrint aria-hidden="true" /> También son parte del equipo</span>
         <h3 id="pets-title">Nuestras mascotas</h3>
@@ -684,7 +694,7 @@ export default function App() {
           <span>Manada Solidaria</span>
           <div className="footer__logos">
             <img className="footer__utn" src="/isologotipo-utn-blanco.svg" alt="Universidad Tecnológica Nacional" loading="lazy" />
-            <span>Proyecto académico · Equipo Nexo · 2026</span>
+            <span>Proyecto final de grado · Equipo Nexo · 2026</span>
           </div>
         </div>
       </footer>

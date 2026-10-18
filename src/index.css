@@ -1186,7 +1186,10 @@ h1 em {
 .pets-carousel__nav--previous svg { transform: rotate(180deg); }
 .pets-carousel__controls svg, .pets-carousel__nav svg { width: 22px; height: 22px; }
 .pets-carousel__controls button:disabled, .pets-carousel__nav:disabled { opacity: 0.35; cursor: default; }
-.pets-carousel__controls button:not(:disabled):hover, .pets-carousel__nav:not(:disabled):hover { background: var(--orange); color: var(--white); }
+.pets-carousel__controls button:not(:disabled):active, .pets-carousel__nav:not(:disabled):active { background: var(--orange); color: var(--white); }
+@media (hover: hover) and (pointer: fine) {
+  .pets-carousel__controls button:not(:disabled):hover, .pets-carousel__nav:not(:disabled):hover { background: var(--orange); color: var(--white); }
+}
 .pets-carousel__controls > span { min-width: 42px; color: var(--brown); font-size: 14px; font-weight: 700; text-align: center; }
 .pets-carousel__gallery { min-width: 0; }
 .pets-carousel__track { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 26px; background: rgba(255, 255, 255, 0.55); }
