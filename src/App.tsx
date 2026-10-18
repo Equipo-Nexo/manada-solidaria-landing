@@ -421,7 +421,7 @@ export default function App() {
           <div className="hero__copy">
             <div className="eyebrow">
               <span className="eyebrow__line" />
-              Bienestar animal en Villa María
+              Bienestar animal en Villa María y Villa Nueva
             </div>
             <h1>
               La ayuda se vuelve más fuerte cuando{" "}
