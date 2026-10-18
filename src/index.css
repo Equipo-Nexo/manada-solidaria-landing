@@ -1887,6 +1887,18 @@ footer {
 .challenge,
 .team {
   position: relative;
+  isolation: isolate;
+}
+
+.hero {
+  isolation: isolate;
+}
+
+.hero > .shell,
+.challenge > .shell,
+.team > .shell {
+  position: relative;
+  z-index: 2;
 }
 
 .walking-paws {
@@ -1895,7 +1907,7 @@ footer {
   overflow: hidden;
   pointer-events: none;
   user-select: none;
-  z-index: 3;
+  z-index: 1;
 }
 
 .walking-paws__trail {
