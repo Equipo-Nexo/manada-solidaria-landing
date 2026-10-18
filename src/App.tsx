@@ -21,6 +21,7 @@ function PetsCarousel() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [manualNavigation, setManualNavigation] = useState(0)
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -35,17 +36,19 @@ function PetsCarousel() {
   useEffect(() => {
     if (paused || hovered || petPhotos.length < 2) return
     const timer = window.setInterval(() => {
+      if (manualNavigation) setManualNavigation(0)
       if (!document.hidden) {
         const element = track.current
         element?.scrollTo({ left: ((active + 1) % petPhotos.length) * element.clientWidth, behavior: "smooth" })
       }
-    }, 3000)
+    }, manualNavigation ? 1500 : 3000)
     return () => window.clearInterval(timer)
-  }, [active, paused, hovered])
+  }, [active, paused, hovered, manualNavigation])
 
-  const goTo = (index: number) => {
+  const goTo = (index: number, resumeSoon = false) => {
     const element = track.current
     if (!element) return
+    if (resumeSoon) setManualNavigation((navigation) => navigation + 1)
     const target = Math.max(0, Math.min(index, petPhotos.length - 1))
     element.scrollTo({ left: target * element.clientWidth, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
   }
@@ -77,7 +80,7 @@ function PetsCarousel() {
         }} onKeyDown={(event) => {
           if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
             event.preventDefault()
-            goTo(active + (event.key === "ArrowRight" ? 1 : -1))
+            goTo(active + (event.key === "ArrowRight" ? 1 : -1), true)
           }
         }}>
           {petPhotos.map((photo, index) => (
@@ -86,15 +89,15 @@ function PetsCarousel() {
             </div>
           ))}
         </div>
-          <button className="pets-carousel__nav pets-carousel__nav--previous" type="button" aria-label="Ver foto anterior" aria-controls="pets-photos" disabled={active === 0} onClick={() => goTo(active - 1)}><Icon name="arrow" /></button>
-          <button className="pets-carousel__nav pets-carousel__nav--next" type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1)}><Icon name="arrow" /></button>
+          <button className="pets-carousel__nav pets-carousel__nav--previous" type="button" aria-label="Ver foto anterior" aria-controls="pets-photos" disabled={active === 0} onClick={() => goTo(active - 1, true)}><Icon name="arrow" /></button>
+          <button className="pets-carousel__nav pets-carousel__nav--next" type="button" aria-label="Ver foto siguiente" aria-controls="pets-photos" disabled={active === petPhotos.length - 1} onClick={() => goTo(active + 1, true)}><Icon name="arrow" /></button>
         </div>
         <div className="pets-carousel__controls">
           <span aria-live={paused || hovered ? "polite" : "off"} aria-atomic="true">{active + 1} / {petPhotos.length}</span>
         </div>
         <div className="pets-carousel__thumbnails" aria-label="Elegir foto">
           {petPhotos.map((photo, index) => (
-            <button type="button" key={photo.path} aria-label={`Ver foto ${index + 1}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index)}>
+            <button type="button" key={photo.path} aria-label={`Ver foto ${index + 1}`} aria-current={active === index ? "true" : undefined} onClick={() => goTo(index, true)}>
               <img src={photo.src} alt="" loading="lazy" />
             </button>
           ))}
